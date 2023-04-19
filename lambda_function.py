@@ -1,4 +1,3 @@
-import json
 import boto3
 import gzip
 import re
@@ -42,15 +41,13 @@ def extract_fields(data, fields):
 def lambda_handler(event, context):
     # TODO implement
     BUCKET_NAME = event['Records'][0]['s3']['bucket']['name']
-    KEY = event['Records'][0]['s3']['object']['key']
+    KEY = event['Records'][0]['s3']['object']['key'] # 파일명
     
     data = s3.get_object(Bucket = BUCKET_NAME, Key = KEY)
     data = data['Body'].read()
-    data = gzip.decompress(data).decode('utf-8')
+    data = gzip.decompress(data).decode('utf-8') # s3에서 받아온 데이터를 gzip으로 압축해제하고 utf-8로 디코딩
     
     datas = data.splitlines()
-    
-    logList = []
     
     logList = []
     for line in datas:
