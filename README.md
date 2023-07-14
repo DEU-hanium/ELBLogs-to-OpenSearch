@@ -209,6 +209,22 @@ zip -g lambda.zip lambda_function.py
 
 # 6. OpenSearch 대쉬보드 확인
 ---
+확인 전에 opensearch에서 권한 설정을 해줘야 한다.
+
+- [아마존 공식 문서](https://docs.aws.amazon.com/ko_kr/opensearch-service/latest/developerguide/fgac.html#fgac-mapping)
+
+좌측 메뉴에서 OpenSearch Plugins에서 Security를 들어가면 된다.
+
+Internal users에서 Create internal user로 들어가서 user 등록을 해준다. 
+
+본 프로젝트에서는 username과 password를 기입 후 진행한다. 후에 Backend roles - optional에서 aws의 IAM 역할로 만들었던 lambda의 관리자 arn을 복사하여 붙혀넣기 해준 후에 create 해주면 된다.
+
+![image](https://drive.google.com/uc?id=15M48WkrkGPUJb0p19yr3fO9G8RQFroie)
+
+
+그 후에 Security에 있는 Roles의 all_access를 선택하여 방금 만든 user를 Mapped users에서 Manage mapping을 선택 후 Users에 추가시킨 후에 마찬가지로 Backend roles에 IAM를 복사 - 붙혀넣기하여 Map을 누르면 권한 설정이 완료된다.
+
+테스트로 설정해놓은 ALB의 DNS를 크롤링 기준에 맞춰서 접속을 해준다. 그 후에 Opensearch에 접속해준다.
 
 > 아까 접속했던 OpenSearch 대쉬보드 접속 -> 좌측 메뉴바 -> 아래쪽 Dev Tools 클릭
 
@@ -218,8 +234,11 @@ GET _search
   "query": {
     "match_all": {}
   }
-}
-```
+  ```
+
+을 해준다면 이미지와 같은 화면이 뜨면서 정보들을 확인할 수 있다.
+
+![image](https://drive.google.com/uc?id=1JQLEkuuWD6OTvIbsqTepvsVxjRgMkev5)
 
 > - OpenSearch 쿼리를 어떻게 하는지를 모르지만 이거는 걍 전체 다 검색인거같다.
 > - 우측 화면에 결과가 잘 뜬다면 성공
